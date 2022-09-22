@@ -5,6 +5,6 @@ import UseController from "../controllers/useControllers"
 
 const router = Router()
 
-router.get("/", UseController.information)
+router.post("/create", UseController.create)
 
 export default router
