@@ -1,3 +1,6 @@
+// model
+import User from "../models/User"
+
 import { Request, Response } from "express";
 import * as yup from "yup"
 import * as bcrypt from "bcrypt"
@@ -11,6 +14,8 @@ export default class UseController {
             password,
             confirPassword
         } = req.body
+
+        const user = await User.findOne({email: email})
 
         // Verifications
         const schema = yup.object().shape({
@@ -27,6 +32,11 @@ export default class UseController {
             return res.status(422).json({erro: "The passwords is not iquals"})
         }
 
+        // check if user exist
+        if(user){
+            return res.status(422).json({erro: 'User already exists'})
+        }
+
         // Create the criptografy of password
         const salt: string = await bcrypt.genSalt(12)
         const passwordHash: string = await bcrypt.hash(password, salt)
@@ -35,6 +45,52 @@ export default class UseController {
             return res.status(500).json({erro: "Erro on server!"})
         }
 
-       return res.status(200).json({fullName, email, passwordHash})
+       const newUser = await User.create({
+        fullName,
+        email,
+        password: passwordHash
+       })
+
+       if(!newUser){
+        return res.status(500).json('Erro on server!')
+       }
+
+       return res.status(200).json(newUser)
+
+    }
+
+    static async login(req: Request, res: Response):  Promise<Response>{
+
+        const {
+            email,
+            password
+        } = req.body
+
+        const schema = yup.object({
+            email: yup.string().required().email(),
+            password: yup.string().required().min(6)
+        })
+
+        if(!(await schema.isValid(req.body))){
+            return res.status(400).json({
+                error: "Error on validate schema"
+            })
+        } 
+
+        // check if User does not exist
+        const user = await User.findOne({email: email})
+        if(!user){
+            return res.status(422).json({erro: 'User does not exist'})
+        }
+
+        // check the user password is equals the password 
+        const checkThePassword = await bcrypt.compare(password, user.password)
+
+        if(!checkThePassword){
+            return res.status(422).json({erro: 'Password is wrong!'})
+        }
+
+        return res.status(200).json(user)
+
     }
 }
