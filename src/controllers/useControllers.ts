@@ -5,8 +5,13 @@ import { Request, Response } from "express";
 import * as yup from "yup"
 import * as bcrypt from "bcrypt"
 
+//midllewares
+import createUserToken from "../middlewares/CreateUserToken";
+import getToken from "../middlewares/getToken";
+import getUserByToken from "../middlewares/getUserByToken";
+
 export default class UseController {
-    static async create(req: Request, res: Response): Promise<Response>{
+    static async create(req: Request, res: Response): Promise<any>{ //CREATE A USER
 
         const {
             fullName,
@@ -55,11 +60,11 @@ export default class UseController {
         return res.status(500).json('Erro on server!')
        }
 
-       return res.status(200).json(newUser)
+       await createUserToken(newUser, req, res)
 
     }
 
-    static async login(req: Request, res: Response):  Promise<Response>{
+    static async login(req: Request, res: Response):  Promise<any>{ //LOGIN A USER
 
         const {
             email,
@@ -88,6 +93,22 @@ export default class UseController {
 
         if(!checkThePassword){
             return res.status(422).json({erro: 'Password is wrong!'})
+        }
+
+        await createUserToken(user, req, res)
+
+    }
+
+    static async getUser(req: Request, res: Response): Promise<Response> {
+
+        // get user by token
+        const token = getToken(req)
+        const user = await getUserByToken(token, res)
+
+        if(!user){
+            return res.status(404).json({
+                error: "User is not found"
+            })
         }
 
         return res.status(200).json(user)
