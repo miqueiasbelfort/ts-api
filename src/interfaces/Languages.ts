@@ -2,7 +2,6 @@ import { Document } from "mongoose";
 
 type Iintroductions = {
     id: number,
-    img: string,
     question: string,
     response: string,
     tip?: string,
