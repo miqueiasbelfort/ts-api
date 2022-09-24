@@ -16,5 +16,7 @@ import './config/conn'
 
 //routes import
 import useRoutes from "./routers/userRoutes"
+import languageRoutes from "./routers/languageRoutes"
 
 app.use("/api/v1/user", useRoutes)
+app.use("/api/v1/lang", languageRoutes)

@@ -35,6 +35,8 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     }
+}, {
+    timestamps: true,
 })
 
 const User = model<UserI>('User', userSchema)
