@@ -1,16 +1,5 @@
-import { Document } from "mongoose";
+import { Document, Schema } from "mongoose";
 
-type Iintroductions = {
-    id: number,
-    question: string,
-    response: string,
-    tip?: string,
-    answer_questions: Array<{
-        img: string,
-        text: string,
-        audio?: string,
-    }>[]
-}
 type Ivideo_lessons = {
     id: number,
     difficulty: string,
@@ -27,7 +16,9 @@ type Itext_form = {
 
 export interface LanguageI extends Document{
     name: string,
-    introduction: Array<Iintroductions>[],
+    introduction: Array<{
+        id: Schema.Types.ObjectId
+    }>[],
     video_lessons: Array<Ivideo_lessons>[],
     text_from: Array<Itext_form>[],
     points_earnedr: number

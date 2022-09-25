@@ -8,13 +8,13 @@ const docsStorege = multer.diskStorage({
 
         let folder: string = ""
 
-        if(req.baseUrl.includes("addintroductions")){
+        if(req.url.includes("addintroductions")){
             folder = "Introductions"
-        } else if (req.baseUrl.includes("addvideos")){
+        } else if (req.url.includes("addvideos")){
             folder = "videos"
         }
 
-        cb(null, `uploads/${folder}`) // The path of image
+        cb(null, `src/uploads/${folder}`) // The path of image
 
     },
     filename: function (req, file, cb) { // The name of image with framework uuid
