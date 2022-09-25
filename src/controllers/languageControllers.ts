@@ -64,32 +64,18 @@ export default class LanguageController {
 
     static async addAnswerOptions(req: Request, res: Response): Promise<Response>{   // ADD INTRODUCTIONS ANSWERS
 
-        const {id} = req.params
+        const {id, idquestion} = req.params
         const {text} = req.body
-        return res.status(200).json("Hello World")
-
-        let doc: any;
-        if(req.file){
-            doc = req.file
-        }
         
         const language = await Language.findById(id)
 
         if(!language){
             return res.status(404).json({erro: "Language not found"})
         }
+        
+       const files = req.files as Express.Multer.File[]
 
-        try {
-            
-            const object: {img: any, text: string, audio: any} = {
-                img: doc.filename[0],
-                text,
-                audio: doc.filename[1]
-            }
-
-        } catch (error) {
-            return res.status(500).json({erro: error})
-        }
+        return res.status(200).json({files})
 
     }
 }
