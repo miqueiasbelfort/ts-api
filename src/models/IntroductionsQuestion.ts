@@ -10,7 +10,8 @@ interface Iquestion {
         text: string,
         audio?: string,
     }>[],
-    numController: number
+    numController: number,
+    questionId: string
 }
 
 const introductionsSchema = new Schema({
@@ -29,6 +30,10 @@ const introductionsSchema = new Schema({
     },
     numController: {
         type: Number,
+        required: true
+    },
+    questionId: {
+        type: String,
         required: true
     }
 }, {

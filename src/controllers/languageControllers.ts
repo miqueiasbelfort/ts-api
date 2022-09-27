@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Schema } from "mongoose";
 
 //models
 import Language from "../models/Language"
@@ -32,16 +31,15 @@ export default class LanguageController {
             return res.status(404).json({erro: 'Language not found!'})
         }
 
-        const ques = await IntroductionQuestion.find({})
+        const ques = await IntroductionQuestion.findById(id)
 
         const newQuestion = await IntroductionQuestion.create({
             question,
             response,
             tip,
-            numController: ques.length + 1
+            numController: 1,
+            questionId: ques?._id
         })
-
-        lang.introduction.push()
 
     }
 
