@@ -6,13 +6,6 @@ export interface LanguageI extends Document{
     points_earnedr: number
 }
 
-// for question in introduction
-interface answers {
-    img?: string,
-    text?: string | any ,
-    audio?: string,
-}
-
 export interface IintroductionQuest extends Document {
     language: string,
     languageId: string,

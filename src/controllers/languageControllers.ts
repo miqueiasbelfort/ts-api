@@ -1,13 +1,13 @@
-import { Request, Response } from "express";
+import { Request, Response, Express } from "express";
 
 //models
 import Language from "../models/Language"
 import IntroductionQuestion from "../models/IntroductionsQuestion";
 
 interface answers {
-    img?: string,
-    text?: string | any ,
-    audio?: string,
+    img?: any,
+    text?: string,
+    audio?: any,
 }
 
 export default class LanguageController {
@@ -68,13 +68,18 @@ export default class LanguageController {
             return res.status(404).json({erro: 'Question not found!'})
         }
 
-        const files = req.file
+        const files = req.files
+        if(!files){
+            return res.status(422).json({erro: 'Need a files'})
+        }
+
+        console.log(files)
 
         const newAnswer = {
-            img: '',
+            img: files,
             text,
-            audio: ''
-        } as answers
+            audio: files
+        }
 
         try {
             queryQuestion.answers.push(newAnswer)
@@ -83,7 +88,7 @@ export default class LanguageController {
             return res.status(500).json({erro: error})
         }
 
-        return res.status(200).json("Create a new answer")
+        return res.status(200).json(queryQuestion)
 
     }
 }

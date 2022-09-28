@@ -9,7 +9,7 @@ import { docsUpload } from "../middlewares/uploadsDocs";
 const router = Router()
 
 router.post("/create", languageControllers.create)
-router.put("/addintroductions/:id", languageControllers.addIntructions)
-router.put("/addintroductions/:id/:idquestion", docsUpload.array('docs'), languageControllers.addAnswerOptions)
+router.post("/addintroductions/:id", languageControllers.addIntructions)
+router.put("/addanswers/:id", docsUpload.array('docs'), languageControllers.addAnswerOptions)
 
 export default router

@@ -8,7 +8,7 @@ const docsStorege = multer.diskStorage({
 
         let folder: string = ""
 
-        if(req.url.includes("addintroductions")){
+        if(req.url.includes("addanswers")){
             folder = "Introductions"
         } else if (req.url.includes("addvideos")){
             folder = "videos"
