@@ -1,7 +1,7 @@
 import { Schema, model, Document } from "mongoose"
 
 // interface of types
-import { LanguageI } from "../interfaces/Languages"
+import { LanguageI } from "../interfaces/models"
 
 const languageSchema = new Schema({
     name: {

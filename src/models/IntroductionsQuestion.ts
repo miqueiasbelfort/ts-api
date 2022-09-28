@@ -1,45 +1,40 @@
 import { Schema, model, Document, ObjectId } from "mongoose"
 
-interface Iquestion {
-    _id: ObjectId,
-    question: string,
-    response: string,
-    tip?: string,
-    answer_questions: Array<{
-        img: string,
-        text: string,
-        audio?: string,
-    }>[],
-    numController: number,
-    questionId: string
-}
+// interface
+import { IintroductionQuest } from "../interfaces/models"
 
 const introductionsSchema = new Schema({
+    language: {
+        type: String,
+        required: true
+    },
+    languageId: {
+        type: String,
+        required: true
+    },
     question: {
         type: String,
-        required: true,
+        required: true
     },
-    response: {
+    tip:{
+        type: String,
+    },
+    rightAnswer: {
         type: String,
         required: true,
     },
-    tip: String,
-    answer_questions: {
-        type: Array,
-        default: []
-    },
-    numController: {
+    controller: {
         type: Number,
         required: true
     },
-    questionId: {
-        type: String,
-        required: true
+    answers: {
+        type: Array,
+        default: []
     }
 }, {
     timestamps: true
 })
 
-const IntroductionQuestion = model<Iquestion>('IntroductionQuestion', introductionsSchema)
+const IntroductionQuestion = model<IintroductionQuest>('IntroductionQuestion', introductionsSchema)
 
 export default IntroductionQuestion 
