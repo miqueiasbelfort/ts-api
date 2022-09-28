@@ -68,14 +68,22 @@ export default class LanguageController {
             return res.status(404).json({erro: 'Question not found!'})
         }
 
+        const files = req.file
+
         const newAnswer = {
             img: '',
             text,
             audio: ''
         } as answers
 
-        queryQuestion.answers.push(newAnswer)
-    
+        try {
+            queryQuestion.answers.push(newAnswer)
+            queryQuestion.save()
+        } catch (error) {
+            return res.status(500).json({erro: error})
+        }
+
+        return res.status(200).json("Create a new answer")
 
     }
 }

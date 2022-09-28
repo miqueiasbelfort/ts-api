@@ -20,5 +20,5 @@ export interface IintroductionQuest extends Document {
     tip: string,
     rightAnswer: string,
     controller: number,
-    answers: Array<answers>[],
+    answers: Object[],
 }   
