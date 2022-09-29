@@ -1,13 +1,14 @@
 import { Request, Response } from 'express'
+import {ObjectId} from "mongoose"
 import 'dotenv/config'
 import * as jwt from 'jsonwebtoken'
 
 interface UserI {
-    _id?: string,
+    _id?: ObjectId,
     fullName: string,
     email: string,
     password: string,
-    languages?: Array<{language?: string, finalizade?: boolean}>[],
+    languages?: Object[],
     points?: number,
     __v?: number,
     createdAt?: string,

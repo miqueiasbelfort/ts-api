@@ -1,5 +1,6 @@
 // model
 import User from "../models/User"
+import Language from "../models/Language"
 
 import { Request, Response } from "express";
 import * as yup from "yup"
@@ -109,6 +110,48 @@ export default class UseController {
             return res.status(404).json({
                 error: "User is not found"
             })
+        }
+
+        return res.status(200).json(user)
+
+    }
+
+    static async addLanguage(req: Request, res: Response): Promise<Response>{ //Add language
+        
+        const {id} = req.params
+
+        // get user by token
+        const token = getToken(req)
+        const user = await getUserByToken(token, res)
+
+        if(!user){
+            return res.status(404).json({
+                error: "User not found"
+            })
+        }
+
+        // get language
+        const lang = await Language.findById(id)
+
+        if(!lang){
+            return res.status(404).json({
+                error: 'Language not found'
+            })
+        }
+
+        const myNewLang = {
+            languageNome: lang?.name,
+            languageId: lang?._id,
+            finalizad: false
+        }
+
+        try {
+            
+            user.languages.push(myNewLang)
+            user.save()
+
+        } catch (error) {
+            return res.status(500).json({error})
         }
 
         return res.status(200).json(user)

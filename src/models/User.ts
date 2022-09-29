@@ -1,13 +1,7 @@
-import { Schema, model, Document } from "mongoose"
+import { Schema, model } from "mongoose"
 
 // type of userSchema
-interface UserI extends Document{
-    fullName: string,
-    email: string,
-    password: string,
-    languages: Array<{language: string, finalizad: boolean}>[]
-    points: number
-}
+import {UserI} from "../interfaces/models"
 
 // Scheman 
 const userSchema = new Schema({

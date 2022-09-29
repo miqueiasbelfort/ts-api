@@ -14,4 +14,12 @@ export interface IintroductionQuest extends Document {
     rightAnswer: string,
     controller: number,
     answers: Object[],
-}   
+}
+
+export interface UserI extends Document{
+    fullName: string,
+    email: string,
+    password: string,
+    languages: Object[],
+    points: number
+}
