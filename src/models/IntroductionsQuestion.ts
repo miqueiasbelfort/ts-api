@@ -30,6 +30,10 @@ const introductionsSchema = new Schema({
     answers: {
         type: Array,
         default: []
+    },
+    type: {
+        type: String,
+        enum: ['text', 'options']
     }
 }, {
     timestamps: true

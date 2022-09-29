@@ -4,11 +4,6 @@ import { Request, Response, Express } from "express";
 import Language from "../models/Language"
 import IntroductionQuestion from "../models/IntroductionsQuestion";
 
-interface answers {
-    img?: any,
-    text?: string,
-    audio?: any,
-}
 
 export default class LanguageController {
     static async create(req: Request, res: Response): Promise<Response>{ //CREATE A NEW LANGUAGE
@@ -29,7 +24,7 @@ export default class LanguageController {
 
         const {id} = req.params
 
-        const {question, rightAnswer, tip} = req.body
+        const {question, rightAnswer, tip, type} = req.body
 
         const lang = await Language.findById(id) //get language
 
@@ -45,7 +40,8 @@ export default class LanguageController {
             tip,
             controller: query.length + 1,
             language: lang?.name,
-            languageId: lang?._id
+            languageId: lang?._id,
+            type
         }) // create a new data itroduction
 
         if(!newQuestion){
@@ -56,7 +52,7 @@ export default class LanguageController {
 
     }
 
-    static async addAnswerOptions(req: Request, res: Response): Promise<Response>{   // ADD INTRODUCTIONS ANSWERS
+    static async addAnswerOptions(req: Request, res: Response): Promise<Response>{   // ADD INTRODUCTIONS ANSWERS OPTIONS
 
         const {id} = req.params
 
@@ -68,22 +64,48 @@ export default class LanguageController {
             return res.status(404).json({erro: 'Question not found!'})
         }
 
-        const files = req.files
-        if(!files){
-            return res.status(422).json({erro: 'Need a files'})
-        }
-
-        console.log(files)
+        const files = req.files as Express.Multer.File[]
 
         const newAnswer = {
-            img: files,
+            img: files[0].filename || '',
             text,
-            audio: files
+            audio: files[1].filename || ''
         }
 
         try {
             queryQuestion.answers.push(newAnswer)
             queryQuestion.save()
+        } catch (error) {
+            return res.status(500).json({erro: error})
+        }
+
+        return res.status(200).json(queryQuestion)
+
+    }
+
+    static async addAnswerText(req: Request, res: Response): Promise<Response>{ // ADD INTRODUCTIONS ANSWERS TEXT
+
+        const {id} = req.params
+        const {text} = req.body
+
+        const queryQuestion = await IntroductionQuestion.findById(id)
+
+        if(!queryQuestion){
+            return res.status(404).json({erro: 'Question not found!'})
+        }
+
+        const file = req.file as Express.Multer.File
+
+        const newAnswer = {
+            text,
+            auido: file.filename
+        }
+
+        try {
+            
+            queryQuestion.answers.push(newAnswer)
+            queryQuestion.save()
+
         } catch (error) {
             return res.status(500).json({erro: error})
         }
